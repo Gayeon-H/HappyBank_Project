@@ -36,7 +36,6 @@ public class Member {
     private LocalDateTime updateAt;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "roles")
     @Builder.Default
     @Enumerated(EnumType.STRING)
     private Set<Role> roles = new HashSet<>();
