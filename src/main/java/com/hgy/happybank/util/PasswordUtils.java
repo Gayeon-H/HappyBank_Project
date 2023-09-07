@@ -10,4 +10,9 @@ public class PasswordUtils {
         return BCrypt.hashpw(password, BCrypt.gensalt());
     }
 
+    public static boolean equalPassword(String password,
+                                        String encryptedPassword) {
+        return BCrypt.checkpw(password, encryptedPassword);
+    }
+
 }
