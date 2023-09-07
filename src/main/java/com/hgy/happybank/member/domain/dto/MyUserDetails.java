@@ -1,4 +1,4 @@
-package com.hgy.happybank.member.dto;
+package com.hgy.happybank.member.domain.dto;
 
 import com.hgy.happybank.member.domain.Member;
 import lombok.Getter;

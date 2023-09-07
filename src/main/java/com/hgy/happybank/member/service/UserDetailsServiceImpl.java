@@ -1,6 +1,6 @@
 package com.hgy.happybank.member.service;
 
-import com.hgy.happybank.member.dto.MyUserDetails;
+import com.hgy.happybank.member.domain.dto.MyUserDetails;
 import com.hgy.happybank.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,9 +17,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private final MemberRepository memberRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        log.info("[loadUserByUsername] loadUserByUsername 수행. username : {}", username);
-        return new MyUserDetails(memberRepository.findByEmail(username)
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        log.info("[loadUserByUsername] loadUserByUsername 수행. username : {}", email);
+        return new MyUserDetails(memberRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 이메일입니다")));
     }
 }
