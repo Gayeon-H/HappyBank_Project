@@ -4,7 +4,7 @@ import com.hgy.happybank.exception.BizException;
 import com.hgy.happybank.exception.type.ErrorCode;
 import com.hgy.happybank.member.domain.Member;
 import com.hgy.happybank.member.repository.MemberRepository;
-import com.hgy.happybank.util.JWTUtils;
+import com.hgy.happybank.util.JWTProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -28,7 +28,7 @@ import java.util.List;
 public class JwtFilter extends OncePerRequestFilter {
 
     private final MemberRepository memberRepository;
-    private final JWTUtils jwtUtils;
+    private final JWTProvider jwtProvider;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -43,13 +43,13 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String token = authorization.split(" ")[1];
 
-        if (jwtUtils.isExpired(token)) {
+        if (jwtProvider.isExpired(token)) {
             log.error("토큰이 만료되었습니다.");
             filterChain.doFilter(request, response);
             return;
         }
 
-        String email = jwtUtils.getEmail(token);
+        String email = jwtProvider.getEmail(token);
         log.info("email : {}", email);
 
         Member member = memberRepository.findByEmail(email)

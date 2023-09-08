@@ -14,7 +14,7 @@ import java.util.Date;
 
 @Slf4j
 @Component
-public class JWTUtils {
+public class JWTProvider {
 
     @Value("${spring.jwt.secret}")
     public String secretKey;
