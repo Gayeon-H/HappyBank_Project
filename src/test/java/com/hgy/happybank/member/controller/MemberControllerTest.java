@@ -7,6 +7,7 @@ import com.hgy.happybank.member.domain.dto.MemberJoinDTO;
 import com.hgy.happybank.member.domain.dto.MemberLoginDTO;
 import com.hgy.happybank.member.repository.MemberRepository;
 import com.hgy.happybank.member.service.MemberService;
+import com.hgy.happybank.util.JWTProvider;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,15 +15,18 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@ContextConfiguration
 @WebMvcTest(MemberController.class)
 class MemberControllerTest {
 
@@ -34,6 +38,9 @@ class MemberControllerTest {
 
     @MockBean
     MemberRepository memberRepository;
+
+    @MockBean
+    JWTProvider jwtProvider;
 
     @Autowired
     ObjectMapper objectMapper;
@@ -64,8 +71,7 @@ class MemberControllerTest {
         String name = "홍길동";
         String nickname = "동에번쩍";
 
-        when(memberService.join(any()))
-                .thenThrow(new BizException(ErrorCode.EMAIL_DUPLICATED));
+        doThrow(new BizException(ErrorCode.EMAIL_DUPLICATED)).when(memberService).join(any());
 
         mockMvc.perform(post("/api/v1/members/join")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -84,8 +90,7 @@ class MemberControllerTest {
         String name = "홍길동";
         String nickname = "동에번쩍";
 
-        when(memberService.join(any()))
-                .thenThrow(new BizException(ErrorCode.NICKNAME_DUPLICATED));
+        doThrow(new BizException(ErrorCode.NICKNAME_DUPLICATED)).when(memberService).join(any());
 
         mockMvc.perform(post("/api/v1/members/join")
                         .contentType(MediaType.APPLICATION_JSON)

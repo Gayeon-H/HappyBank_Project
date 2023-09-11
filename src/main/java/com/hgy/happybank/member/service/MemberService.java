@@ -6,7 +6,7 @@ import com.hgy.happybank.member.domain.Member;
 import com.hgy.happybank.member.domain.dto.MemberJoinDTO;
 import com.hgy.happybank.member.repository.MemberRepository;
 import com.hgy.happybank.member.type.Role;
-import com.hgy.happybank.util.JWTUtils;
+import com.hgy.happybank.util.JWTProvider;
 import com.hgy.happybank.util.PasswordUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,10 +15,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class MemberService {
 
-    private final JWTUtils jwtUtils;
+    private final JWTProvider jwtProvider;
     private final MemberRepository memberRepository;
 
-    public String join(MemberJoinDTO dto) {
+    public void join(MemberJoinDTO dto) {
         memberRepository.findByEmail(dto.getEmail())
                 .ifPresent(member -> {
                     throw new BizException(ErrorCode.EMAIL_DUPLICATED);
@@ -30,7 +30,6 @@ public class MemberService {
                 });
 
         memberRepository.save(dto.toMember().addRoles(Role.USER));
-        return "SUCCESS";
     }
 
     public String login(String email, String password) {
@@ -41,6 +40,6 @@ public class MemberService {
             throw new BizException(ErrorCode.INVALID_PASSWORD);
         }
 
-        return jwtUtils.createJwt(email);
+        return jwtProvider.createJwt(email);
     }
 }
