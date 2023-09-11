@@ -3,9 +3,9 @@ package com.hgy.happybank.board.controller;
 import com.hgy.happybank.board.domain.dto.BoardRegDTO;
 import com.hgy.happybank.board.domain.dto.BoardUpdateDTO;
 import com.hgy.happybank.board.service.BoardService;
-import com.hgy.happybank.util.JWTProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,48 +15,42 @@ import org.springframework.web.bind.annotation.*;
 public class BoardController {
 
     private final BoardService boardService;
-    private final JWTProvider jwtProvider;
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestHeader("Authorization") String authorization,
+    public ResponseEntity<?> register(Authentication authentication,
                                       @RequestBody @Validated BoardRegDTO boardRegDTO) {
-        String email = jwtProvider.getEmail(authorization.split(" ")[1]);
-        boardService.register(boardRegDTO, email);
 
+        boardService.register(boardRegDTO, authentication.getName());
         return ResponseEntity.ok().body("저금통이 생성되었습니다.");
     }
 
     @GetMapping
-    public ResponseEntity<?> getBoardList(@RequestHeader("Authorization") String authorization) {
-        String email = jwtProvider.getEmail(authorization.split(" ")[1]);
+    public ResponseEntity<?> getBoardList(Authentication authentication) {
 
-        return ResponseEntity.ok().body(boardService.getBoardList(email));
+        return ResponseEntity.ok().body(boardService.getBoardList(authentication.getName()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getBoard(@PathVariable Long id,
-                                      @RequestHeader("Authorization") String authorization) {
-        String email = jwtProvider.getEmail(authorization.split(" ")[1]);
+    public ResponseEntity<?> getBoard(Authentication authentication,
+                                      @PathVariable Long id) {
 
-        return ResponseEntity.ok().body(boardService.getBoard(id, email));
+        return ResponseEntity.ok().body(boardService.getBoard(id, authentication.getName()));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateBoard(@PathVariable Long id,
-                                         @RequestHeader("Authorization") String authorization,
+    public ResponseEntity<?> updateBoard(Authentication authentication,
+                                         @PathVariable Long id,
                                          @RequestBody @Validated BoardUpdateDTO boardUpdateDTO) {
-        String email = jwtProvider.getEmail(authorization.split(" ")[1]);
-        boardService.updateBoard(id, email, boardUpdateDTO);
 
+        boardService.updateBoard(id, authentication.getName(), boardUpdateDTO);
         return ResponseEntity.ok().body("저금통 이름이 수정되었습니다.");
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteBoard(@PathVariable Long id,
-                                         @RequestHeader("Authorization") String authorization) {
-        String email = jwtProvider.getEmail(authorization.split(" ")[1]);
-        boardService.deleteBoard(id, email);
+    public ResponseEntity<?> deleteBoard(Authentication authentication,
+                                         @PathVariable Long id) {
 
+        boardService.deleteBoard(id, authentication.getName());
         return ResponseEntity.ok().body("저금통이 삭제되었습니다.");
     }
 }
