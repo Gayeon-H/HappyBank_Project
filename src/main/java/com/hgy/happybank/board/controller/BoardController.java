@@ -32,14 +32,14 @@ public class BoardController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getBoard(Authentication authentication,
-                                      @PathVariable Long id) {
+                                      @PathVariable long id) {
 
         return ResponseEntity.ok().body(boardService.getBoard(id, authentication.getName()));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateBoard(Authentication authentication,
-                                         @PathVariable Long id,
+                                         @PathVariable long id,
                                          @RequestBody @Validated BoardUpdateDTO boardUpdateDTO) {
 
         boardService.updateBoard(id, authentication.getName(), boardUpdateDTO);
@@ -48,7 +48,7 @@ public class BoardController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteBoard(Authentication authentication,
-                                         @PathVariable Long id) {
+                                         @PathVariable long id) {
 
         boardService.deleteBoard(id, authentication.getName());
         return ResponseEntity.ok().body("저금통이 삭제되었습니다.");
