@@ -13,7 +13,6 @@ import com.hgy.happybank.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,18 +36,9 @@ public class BoardService {
         boardRepository.save(Board.builder()
                 .boardName(boardRegDTO.getName())
                 .registerAt(LocalDateTime.now())
-                .openDate(getOpenDate(boardRegDTO))
+                .openDate(OpenDate.getOpenDate(boardRegDTO.getOpenDate()))
                 .member(member)
                 .build());
-    }
-
-    private static LocalDate getOpenDate(BoardRegDTO boardRegDTO) {
-        if (boardRegDTO.getOpenDate() == OpenDate.YEAR_END) {
-            return LocalDate.of(LocalDate.now().getYear(), 12, 24);
-        } else {
-            return LocalDate.now()
-                    .plusMonths(boardRegDTO.getOpenDate().getPlusMonths());
-        }
     }
 
     public List<BoardResponse> getBoardList(String email) {
