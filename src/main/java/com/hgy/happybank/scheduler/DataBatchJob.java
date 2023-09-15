@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -26,10 +27,8 @@ public class DataBatchJob {
         String formattedDate = LocalDate.now().minusDays(1).format(formatter);
 
         log.info("{} : 배치작업 시작", formattedDate);
-        Set<String> keys = redisTemplate.keys("record:" + formattedDate + ":*")
-                .stream().filter(key -> key != null).collect(Collectors.toSet());
-        List<RecordDTO> dataFromRedis = redisTemplate.opsForValue().multiGet(keys)
-                .stream().filter(dto -> dto != null).collect(Collectors.toList());
+        Set<String> keys = Objects.requireNonNull(redisTemplate.keys("record:" + formattedDate + ":*"));
+        List<RecordDTO> dataFromRedis = Objects.requireNonNull(redisTemplate.opsForValue().multiGet(keys));
 
         if (dataFromRedis.size() > 0) {
             recordRepository.saveAll(dataFromRedis
