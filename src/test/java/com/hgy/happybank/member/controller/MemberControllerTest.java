@@ -127,7 +127,7 @@ class MemberControllerTest {
         String password = "12fe34j4";
 
         when(memberService.login(any(), any()))
-                .thenThrow(new BizException(ErrorCode.EMAIL_NOT_FOUND));
+                .thenThrow(new BizException(ErrorCode.MEMBER_NOT_FOUND));
 
 
         mockMvc.perform(post("/api/v1/members/login")

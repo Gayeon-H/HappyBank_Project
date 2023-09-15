@@ -29,7 +29,7 @@ public class BoardService {
 
     public void register(BoardRegDTO boardRegDTO, String email) {
         Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new BizException(ErrorCode.EMAIL_NOT_FOUND));
+                .orElseThrow(() -> new BizException(ErrorCode.MEMBER_NOT_FOUND));
         if (boardRepository.countByMember(member) >= MAX_BOARD) {
             throw new BizException(ErrorCode.OVER_REGISTERED_BOARD);
         }
@@ -53,7 +53,7 @@ public class BoardService {
 
     public List<BoardResponse> getBoardList(String email) {
         Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new BizException(ErrorCode.EMAIL_NOT_FOUND));
+                .orElseThrow(() -> new BizException(ErrorCode.MEMBER_NOT_FOUND));
 
         List<Board> boardList = boardRepository.findByMemberId(member.getId());
 
