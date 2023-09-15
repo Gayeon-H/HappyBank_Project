@@ -3,12 +3,16 @@ package com.hgy.happybank.member.service;
 import com.hgy.happybank.exception.BizException;
 import com.hgy.happybank.exception.type.ErrorCode;
 import com.hgy.happybank.member.domain.Member;
+import com.hgy.happybank.member.domain.dto.MemberDTO;
 import com.hgy.happybank.member.domain.dto.MemberJoinDTO;
 import com.hgy.happybank.member.repository.MemberRepository;
 import com.hgy.happybank.member.type.Role;
 import com.hgy.happybank.util.JWTProvider;
 import com.hgy.happybank.util.PasswordUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -34,7 +38,7 @@ public class MemberService {
 
     public String login(String email, String password) {
         Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new BizException(ErrorCode.EMAIL_NOT_FOUND));
+                .orElseThrow(() -> new BizException(ErrorCode.MEMBER_NOT_FOUND));
 
         if (!PasswordUtils.equalPassword(password, member.getPassword())) {
             throw new BizException(ErrorCode.INVALID_PASSWORD);
@@ -42,4 +46,14 @@ public class MemberService {
 
         return jwtProvider.createJwt(email);
     }
+
+    public Page<MemberDTO> searchNickname(String nickname) {
+        return memberRepository.findByNicknameContainingIgnoreCase(nickname,
+                        PageRequest.of(0, 10, Sort.Direction.ASC, "nickname"))
+                .map(member -> MemberDTO.builder()
+                        .id(member.getId())
+                        .nickname(member.getNickname())
+                        .build());
+    }
+
 }
