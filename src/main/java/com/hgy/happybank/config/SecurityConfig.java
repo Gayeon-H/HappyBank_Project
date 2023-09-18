@@ -9,9 +9,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-@RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
@@ -24,6 +24,7 @@ public class SecurityConfig {
                 .cors().and()
                 .authorizeRequests()
                 .antMatchers("/api/v1/members/join", "/api/v1/members/login").permitAll()
+                .antMatchers("/api/v1/admin/**").hasRole("ADMIN")
                 .antMatchers("/api/v1/**").authenticated()
                 .and()
                 .sessionManagement()

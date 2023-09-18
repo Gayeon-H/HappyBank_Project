@@ -33,7 +33,13 @@ public class MemberService {
                     throw new BizException(ErrorCode.NICKNAME_DUPLICATED);
                 });
 
-        memberRepository.save(dto.toMember().addRoles(Role.USER));
+        Member member = dto.toMember().addRoles(Role.ROLE_USER);
+
+        if (dto.isAdmin()) {
+            member.addRoles(Role.ROLE_ADMIN);
+        }
+
+        memberRepository.save(member);
     }
 
     public String login(String email, String password) {

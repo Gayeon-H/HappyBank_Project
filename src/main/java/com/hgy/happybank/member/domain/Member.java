@@ -1,7 +1,10 @@
 package com.hgy.happybank.member.domain;
 
 import com.hgy.happybank.member.type.Role;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -9,7 +12,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Getter
-@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -35,7 +37,8 @@ public class Member {
     private LocalDateTime registerAt;
     private LocalDateTime updateAt;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.EAGER, targetClass = Role.class)
+    @CollectionTable(name = "member_roles", joinColumns = @JoinColumn(name = "member_id"))
     @Builder.Default
     @Enumerated(EnumType.STRING)
     private Set<Role> roles = new HashSet<>();

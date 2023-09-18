@@ -57,7 +57,7 @@ class MemberControllerTest {
         mockMvc.perform(post("/api/v1/members/join")
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf())
-                        .content(objectMapper.writeValueAsBytes(new MemberJoinDTO(email, password, name, nickname))))
+                        .content(objectMapper.writeValueAsBytes(new MemberJoinDTO(email, password, name, nickname, false))))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -76,7 +76,7 @@ class MemberControllerTest {
         mockMvc.perform(post("/api/v1/members/join")
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf())
-                        .content(objectMapper.writeValueAsBytes(new MemberJoinDTO(email, password, name, nickname))))
+                        .content(objectMapper.writeValueAsBytes(new MemberJoinDTO(email, password, name, nickname, false))))
                 .andDo(print())
                 .andExpect(status().isConflict());
     }
@@ -95,7 +95,7 @@ class MemberControllerTest {
         mockMvc.perform(post("/api/v1/members/join")
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf())
-                        .content(objectMapper.writeValueAsBytes(new MemberJoinDTO(email, password, name, nickname))))
+                        .content(objectMapper.writeValueAsBytes(new MemberJoinDTO(email, password, name, nickname, false))))
                 .andDo(print())
                 .andExpect(status().isConflict());
     }
