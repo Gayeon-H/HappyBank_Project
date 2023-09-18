@@ -18,7 +18,9 @@ public enum ErrorCode {
     RECORD_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 기록입니다."),
     ALREADY_REGISTER_RECORD_TODAY(HttpStatus.CONFLICT, "오늘 기록은 이미 등록되었습니다."),
     FRIEND_REQUEST_ERROR(HttpStatus.CONFLICT, "친구요청 관련 오류입니다."),
-    NOT_FRIEND(HttpStatus.CONFLICT, "친구만 저금통 공유가 가능합니다.");
+    NOT_FRIEND(HttpStatus.CONFLICT, "친구만 저금통 공유가 가능합니다."),
+    QUESTION_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 질문입니다."),
+    NO_RIGHT_ABOUT_THIS_QUESTION(HttpStatus.CONFLICT, "등록자만 수정이 가능합니다.");
 
     private final HttpStatus httpStatus;
     private final String message;
