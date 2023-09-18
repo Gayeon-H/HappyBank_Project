@@ -15,6 +15,7 @@ public class MemberJoinDTO {
     private String password;
     private String name;
     private String nickname;
+    private boolean isAdmin;
 
     public Member toMember() {
         return Member.builder()

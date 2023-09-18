@@ -10,7 +10,7 @@ public class DataBatchScheduler {
 
     private final DataBatchJob dataBatchJob;
 
-    @Scheduled(cron = "0 59 23 * * *")
+    @Scheduled(cron = "0 0 0 * * *")
     public void executeBatchJob() {
         dataBatchJob.performBatchJob();
     }

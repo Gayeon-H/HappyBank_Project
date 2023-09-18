@@ -53,7 +53,7 @@ public class JwtFilter extends OncePerRequestFilter {
         log.info("email : {}", email);
 
         Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new BizException(ErrorCode.EMAIL_NOT_FOUND));
+                .orElseThrow(() -> new BizException(ErrorCode.MEMBER_NOT_FOUND));
 
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(email, null,

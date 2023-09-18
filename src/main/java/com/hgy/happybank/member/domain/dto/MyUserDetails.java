@@ -22,7 +22,7 @@ public class MyUserDetails extends User {
     public MyUserDetails(Member member) {
         this(member.getEmail(), member.getPassword(), member.getRoles()
                 .stream()
-                .map(role -> new SimpleGrantedAuthority(role.getRole()))
+                .map(role -> new SimpleGrantedAuthority(role.toString()))
                 .collect(Collectors.toSet()));
         this.email = member.getEmail();
         this.name = member.getName();

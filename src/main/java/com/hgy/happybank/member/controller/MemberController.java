@@ -1,15 +1,12 @@
 package com.hgy.happybank.member.controller;
 
-import com.hgy.happybank.member.domain.dto.MemberLoginDTO;
 import com.hgy.happybank.member.domain.dto.MemberJoinDTO;
+import com.hgy.happybank.member.domain.dto.MemberLoginDTO;
 import com.hgy.happybank.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/members")
@@ -28,4 +25,11 @@ public class MemberController {
     public ResponseEntity<?> login(@RequestBody @Validated MemberLoginDTO dto) {
         return ResponseEntity.ok().body(memberService.login(dto.getEmail(), dto.getPassword()));
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> searchNickname(@RequestParam("nickname") String nickname) {
+
+        return ResponseEntity.ok().body(memberService.searchNickname(nickname));
+    }
+
 }
