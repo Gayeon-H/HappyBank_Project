@@ -21,7 +21,11 @@ public class BoardShare {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "board_id")
     private Long boardId;
+
+    @Column(name = "friend_id")
     private Long friendId;
 
 }

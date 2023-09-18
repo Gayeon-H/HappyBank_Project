@@ -21,8 +21,13 @@ public class Friend {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "to_member_id")
     private Long toMemberId;
+
+    @Column(name = "from_member_id")
     private Long fromMemberId;
+
     private boolean areWeFriends;
 
     public void setAreWeFriends(boolean areWeFriends) {
