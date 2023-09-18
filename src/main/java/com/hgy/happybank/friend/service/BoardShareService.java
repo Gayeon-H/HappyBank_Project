@@ -32,10 +32,7 @@ public class BoardShareService {
         Member friend = memberRepository.findById(friendId)
                 .orElseThrow(() -> new BizException(ErrorCode.MEMBER_NOT_FOUND));
 
-        if (friendRepository.findByToMemberIdAndFromMemberIdAndAreWeFriends(
-                member.getId(), friendId, true).isEmpty()
-                && friendRepository.findByToMemberIdAndFromMemberIdAndAreWeFriends(
-                friendId, member.getId(), true).isEmpty()) {
+        if (!areWeFriends(friendId, member)) {
             throw new BizException(ErrorCode.NOT_FRIEND);
         }
 
@@ -55,5 +52,12 @@ public class BoardShareService {
                 .friendNickname(friend.getNickname())
                 .boardName(board.getBoardName())
                 .build();
+    }
+
+    private boolean areWeFriends(long friendId, Member member) {
+        return friendRepository.existsByToMemberIdAndFromMemberIdAndAreWeFriends(
+                member.getId(), friendId, true)
+                || friendRepository.existsByToMemberIdAndFromMemberIdAndAreWeFriends(
+                friendId, member.getId(), true);
     }
 }
